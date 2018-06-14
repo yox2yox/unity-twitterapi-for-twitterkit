@@ -1,6 +1,9 @@
 # unity-twitterapi-for-twitterkit
 UnityのアセットTwitter Kitを使って取得したトークンを利用して、TwitterAPIを叩く
 
+# 必要アセット
+Twitter Kit for Unity(https://assetstore.unity.com/packages/tools/integration/twitter-kit-for-unity-84914)
+
 # 設定
 GameObjectにコンポーネントとして設定
 
