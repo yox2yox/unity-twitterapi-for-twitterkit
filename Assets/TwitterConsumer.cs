@@ -10,7 +10,7 @@ using TwitterKit.Unity;
 using System.Security.Cryptography;
 
 
-/// <summary>  
+/// <summary>
 /// ツイッターAPI操作用クラス
 /// TwitterKit(https://assetstore.unity.com/packages/tools/integration/twitter-kit-for-unity-84914)が必要
 /// GameObjectにComponentとして張り付けて、_apiKeyおよび_apiSecretをInspectorビューから入力してください
@@ -51,7 +51,7 @@ public class TwitterConsumer : MonoBehaviour
         Twitter.Init();
     }
 
-    /// <summary>  
+    /// <summary>
     /// ツイッターにログイン
     /// 成功時、返ってきたアクセストークンを保存する
     /// </summary>
@@ -83,7 +83,7 @@ public class TwitterConsumer : MonoBehaviour
     }
 
 
-    /// <summary>  
+    /// <summary>
     /// ユーザー情報取得
     /// LogInTwitterを呼び出す前に呼び出すと、失敗用コールバックを呼び出して終了する
     /// </summary>
@@ -99,7 +99,7 @@ public class TwitterConsumer : MonoBehaviour
 
         string requestMethod = "GET";
         string requestUrl = "https://api.twitter.com/1.1/users/show.json";
-        
+
         var addParams = new Dictionary<string, string> {
             { "screen_name",screenName}
         };
@@ -117,7 +117,7 @@ public class TwitterConsumer : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    /// <summary>  
+    /// <summary>
     /// ツイート
     /// LogInTwitterを呼び出す前に呼び出すと、失敗用コールバックを呼び出して終了する
     /// </summary>
@@ -138,9 +138,9 @@ public class TwitterConsumer : MonoBehaviour
 
         var addParams = new Dictionary<string, string>
         {
-            { "status","%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF" } 
+            { "status","%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF" }
         };
-        
+
 
         var reqParams = _GenerateRequestParams(addParams, _apiKey, _token.token);
 
@@ -148,14 +148,14 @@ public class TwitterConsumer : MonoBehaviour
 
         reqParams.Add("oauth_signature", signature);
         string header = _HttpBuildQuery(reqParams, ",");
-        
+
         IEnumerator coroutine = _HttpRequestAsync(requestMethod, requestUrl+ "?status=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF", header, (response) => {
             complete();
         }, failure);
         StartCoroutine(coroutine);
     }
 
-    /// <summary>  
+    /// <summary>
     /// 署名を生成する
     /// </summary>
     /// <param name="paramsDict">署名生成用パラメータ</param>
@@ -184,7 +184,7 @@ public class TwitterConsumer : MonoBehaviour
 
     }
 
-    /// <summary>  
+    /// <summary>
     /// リクエスト用パラメータリストを生成する
     /// </summary>
     /// <param name="addParams">追加パラメータリスト</param>
@@ -203,7 +203,7 @@ public class TwitterConsumer : MonoBehaviour
         return reqParam;
     }
 
-    /// <summary>  
+    /// <summary>
     /// クエリ文字列を生成する
     /// </summary>
     /// <param name="target">対象リスト</param>
@@ -216,13 +216,13 @@ public class TwitterConsumer : MonoBehaviour
             {
                 query += sep;
             }
-            
+
             query += param.Key + "=" + param.Value;
         }
         return query;
     }
 
-    /// <summary>  
+    /// <summary>
     /// クエリ文字列を生成する
     /// </summary>
     /// <param name="target">対象ディクショナリー</param>
@@ -233,7 +233,7 @@ public class TwitterConsumer : MonoBehaviour
         return _HttpBuildQuery(targetlist, sep);
     }
 
-    /// <summary>  
+    /// <summary>
     /// 文字列のURLエンコードを行う
     /// </summary>
     /// <param name="str">対象文字列</param>
@@ -242,7 +242,7 @@ public class TwitterConsumer : MonoBehaviour
         return _UrlEncodeUpper(url);
     }
 
-    /// <summary>  
+    /// <summary>
     /// 文字列のURLエンコードを行う
     /// </summary>
     /// <param name="str">対象文字列</param>
@@ -252,7 +252,7 @@ public class TwitterConsumer : MonoBehaviour
         return _UrlEncodeUpper(url);
     }
 
-    /// <summary>  
+    /// <summary>
     /// '%'の後ろ2文字を大文字に変換する
     /// </summary>
     /// <param name="str">対象文字列</param>
@@ -265,46 +265,8 @@ public class TwitterConsumer : MonoBehaviour
         }
         return str;
     }
-    /*
-    /// <summary>  
-    /// HttpRequestを行う
-    /// </summary>
-    /// <param name="requestMethod">リクエストメソッド</param>
-    /// <param name="requestUrl">リクエストURL</param>
-    /// <param name="oAuthHeader">OAuth認証用ヘッダー文字列</param>
-    /// <param name="requestComplete">リクエスト成功時の処理</param>
-    /// <param name="requestFailuere">リクエスト失敗時の処理</param>
-    private IEnumerator _HttpRequestAsync(string requestMethod, string requestUrl, string oAuthHeader, UnityAction<string> requestComplete, UnityAction<string> requestFailure)
-    {
-        Debug.logger.Log("TwitterConsumer", "Start Twitter Request : " + requestMethod + " " + requestUrl + "\n" + oAuthHeader);
-        var headers = new Dictionary<string, string>() { { "Authorization", "OAuth " + oAuthHeader } };
-        WWW www;
-        if (requestMethod == "POST")
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("dummy", "dummy");
-            www = new WWW(requestUrl, form.data, headers);
-            
-        }
-        else {
-            www = new WWW(requestUrl, null, headers);
-        }
 
-        yield return www;
-        if (string.IsNullOrEmpty(www.error))
-        {
-            Debug.logger.Log("TwitterConsumer", "Request Complete! : \n" +www.text);
-            requestComplete(www.text);
-        }
-        else {
-            Debug.logger.Log("TwitterConsumer", "Request Failure : \n" + www.error);
-            requestFailure(www.error);
-        }
-
-    }
-    */
-
-    /// <summary>  
+    /// <summary>
     /// HttpRequestを行う
     /// </summary>
     /// <param name="requestMethod">リクエストメソッド</param>
@@ -316,7 +278,7 @@ public class TwitterConsumer : MonoBehaviour
     {
         Debug.unityLogger.Log("TwitterConsumer", "Start Twitter Request : " + requestMethod + " " + requestUrl + "\n" + oAuthHeader);
         UnityWebRequest request;
-          
+
         if (requestMethod == "POST")
         {
             Debug.unityLogger.Log("TwitterConsumer","Ready To Post!");
